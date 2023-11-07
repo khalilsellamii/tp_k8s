@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         DOCKER_HUB_PASSWORD = credentials('Dockerhub_pass')
+        KUBE_CONFIG_FILE = credentials('KUBE_CONFIG_FILE')
         BUILD_TAG = "${BUILD_NUMBER}"
 
     }
@@ -26,7 +27,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 // Build your Docker image. Make sure to specify your Dockerfile and any other build options.
-                sh 'docker build -t khalilsellamii/jenkins-pipeline:v1.${BUILD_TAG} .'
+                sh 'docker build -t khalilsellamii/tp_k8s_app:latest .'
             }
         }
 
@@ -36,17 +37,18 @@ pipeline {
                 sh 'docker login -u khalilsellamii -p $DOCKER_HUB_PASSWORD'
 
                 // Push the built image to Docker Hub
-                sh 'docker push khalilsellamii/jenkins-pipeline:v1.${BUILD_TAG}'
+                sh 'docker push khalilsellamii/tp_k8s_app:latest'
             }
         }
 
         stage('Deploy on k8s') {
             steps {
-                // Log in to Docker Hub using your credentials
+                // Connect to the k3s cluster
                 sh 'export KUBECONFIG=$KUBE_CONFIG_FILE'
 
-                // Push the built image to Docker Hub
-                sh 'kubectl apply -f kubernetes/.'
+                // Deploy on kubernetes
+                sh 'kubectl apply -f kubernetes/deployment.yaml'
+                sh 'kubectl apply -f kubernetes/svc.yaml'
             }
         }
 
