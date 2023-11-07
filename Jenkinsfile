@@ -12,8 +12,8 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Check out your source code from your version control system, e.g., Git.
-                sh 'rm -rf Jekins_pipeline'
-                sh 'git clone https://github.com/khalilsellamii/Jekins_pipeline.git'
+                sh 'rm -rf tp_k8s'
+                sh 'git clone https://github.com/khalilsellamii/tp_k8s'
             }
         }
 
