@@ -9,20 +9,7 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                // Check out your source code from your version control system, e.g., Git.
-                sh 'rm -rf tp_k8s'
-                sh 'git clone https://github.com/khalilsellamii/tp_k8s'
-            }
-        }
-
-        stage('Testing') {
-            steps {
-                // Check out your source code from your version control system, e.g., Git.
-                sh 'python3 src/test.py'
-            }
-        }
+        
 
         stage('Build Docker Image') {
             steps {
